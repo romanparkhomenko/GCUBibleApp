@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+	<head>
+		<title><ui:insert name="Order Response Page">Order Response Page</ui:insert></title>
+	</head>
+	
+<body> 
+
+	<ui:composition template="/layouts/commonLayout.xhtml">
+		<ui:define name="content">
+		<style type="text/css">
+			input[type=button] {padding: 0.5rem 1rem; background: #2c2e2f; color: white; cursor: pointer;}
+ 		</style>
+ 		
+		<h3>#{user.firstName} #{user.lastName}, your order was processed!</h3>
+		
+		<h:button outcome="TestResponse.xhtml" value="Back to login"/>
+		</ui:define>
+		</ui:composition>
+
+</body>
+</html>
