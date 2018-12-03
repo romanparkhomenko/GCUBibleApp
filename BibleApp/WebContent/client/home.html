@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <title>Bible API</title>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <style>
+  	pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; background: #2c2e2f; color: white; }
+  	.api-endpoint {border: 1px solid #2c2e2f; padding: 1rem;}
+	.string { color: #4dc2be; }
+	.number { color: #ffcc00; }
+	.boolean { color: #0099cc; }
+	.null { color: #ff6600; }
+	.key { color: #f13c6e; }
+	input { width: 100%; margin: 0.25rem 0;}
+  </style>
+</head>
+<body>
+ <div class="container">
+  <div class="row">
+  	<div class="col-md-10 offset-1">
+  		<h1 class="text-center mt-5 mb-3">Welcome to the Bible API Demo Client</h1>
+  	</div>  	
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row mt-5">
+  	<div class="col-md-5">
+  		<div class="col-md-12 api-endpoint mt-2">
+  			<h5>Look up a Bible Verse!</h5>
+  			<form action="http://localhost:8085/rest/verses/getVerse" id="getVerse">
+  				<input type="text" name="book" placeholder="Book of the Bible (i.e. Genesis)">
+  				<input type="text" name="chapterNum" placeholder="Chapter Number">
+  				<input type="text" name="verseNum" placeholder="Verse Number">
+  				<input class="btn btn-primary" type="submit" value="Get Bible Verse">
+			</form>
+  		</div>
+  	</div>
+  	<!-- The JSON Response gets rendered here:-->
+  	<div id="result" class="col-md-7">
+  	</div>
+  </div>
+</div>
+ 
+<script>
+//Get all products form submission.
+$('#getVerse').submit(function(e) {
+    var form = $(this);
+    var url = form.attr('action');
+	//jQuery AJAX to process GET Request. This is implemented to prevent form action redirect
+	//so that the visitor can see the JSON Response on the same page.
+    $.ajax({
+           type: 'POST',
+           url: url,
+           data: form.serialize(),
+           success: function(responseText) {
+        	   var jsonResult = JSON.stringify(responseText, null, 2);
+        	   output(jsonResult);
+        	   printBibleVerse(jsonResult);
+           },
+           error: function (data) {
+               alert('An error occurred.');
+               console.log(data);
+           }
+         });
+
+    e.preventDefault(); // Prevent actual form submission to avoid redirect.
+});
+
+// Function to output JSON responses:
+function output(inp) {
+	var resultBox = $('div#result');
+	var createPre = document.createElement('pre');
+	createPre.innerHTML = inp;
+    resultBox.html(createPre);
+}
+//Function to Print actual verse:
+function printBibleVerse(jsonResult) {
+	var resultBox = $('div#result');
+	var createPre = document.createElement('pre');
+	var jsonobj = $.parseJSON(jsonResult);
+	createPre.innerHTML = jsonobj.passages;
+    resultBox.html(createPre);
+}
+//Function to output JSON responses:
+function syntaxHighlight(json) {
+    if (typeof json != 'string') {
+         json = JSON.stringify(json, undefined, 2);
+    }
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'key';
+            } else {
+                cls = 'string';
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+        } else if (/null/.test(match)) {
+            cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+    });
+}
+</script>
+ 
+</body>
+</html>
