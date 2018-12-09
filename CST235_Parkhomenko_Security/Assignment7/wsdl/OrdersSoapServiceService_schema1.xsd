@@ -1,0 +1,44 @@
+<xs:schema xmlns:tns="http://business/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://business/" version="1.0">
+
+  <xs:element name="Order" type="tns:order"></xs:element>
+
+  <xs:element name="getOrders" type="tns:getOrders"></xs:element>
+
+  <xs:element name="getOrdersResponse" type="tns:getOrdersResponse"></xs:element>
+
+  <xs:element name="sayHello" type="tns:sayHello"></xs:element>
+
+  <xs:element name="sayHelloResponse" type="tns:sayHelloResponse"></xs:element>
+
+  <xs:complexType name="getOrders">
+    <xs:sequence></xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getOrdersResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:order"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="order">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="orderNo" type="xs:string"></xs:element>
+      <xs:element name="price" type="xs:float"></xs:element>
+      <xs:element minOccurs="0" name="productName" type="xs:string"></xs:element>
+      <xs:element name="quantity" type="xs:int"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="sayHello">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="sayHelloResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
